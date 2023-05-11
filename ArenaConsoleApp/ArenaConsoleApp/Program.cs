@@ -1,8 +1,9 @@
-﻿using ArenaConsoleApp.Heroes;
+﻿using ArenaConsoleApp.Arena;
+using ArenaConsoleApp.Heroes;
 
 // Composition root
 var heroFactory = new HeroFactory();
-
+var arena = new Arena();
 
 // Start of application
 int numberOfHeroes = 0;
@@ -14,6 +15,7 @@ while(!isUserInputInt){
 
 var heroes = CreateHeroes(numberOfHeroes, heroFactory);
 
+arena.Fight(heroes);
 
 Console.ReadLine();
 
