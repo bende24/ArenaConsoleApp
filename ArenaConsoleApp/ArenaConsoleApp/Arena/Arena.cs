@@ -1,4 +1,5 @@
-﻿using ArenaConsoleApp.Combat.Participants;
+﻿using ArenaConsoleApp.Combat;
+using ArenaConsoleApp.Combat.Participants;
 using ArenaConsoleApp.ExtensionMethods;
 using ArenaConsoleApp.Healers;
 using ArenaConsoleApp.Heroes;
@@ -10,11 +11,13 @@ namespace ArenaConsoleApp.Arena
     {
         private readonly ICombatParticipantsPicker _participantsPicker;
         private readonly IMassHealer _massHealer;
+        private readonly ICombatHandler _combatHandler;
 
-        public Arena(ICombatParticipantsPicker participantsPicker, IMassHealer massHealer)
+        public Arena(ICombatParticipantsPicker participantsPicker, IMassHealer massHealer, ICombatHandler combatHandler)
         {
             _participantsPicker = participantsPicker ?? throw new ArgumentNullException(nameof(participantsPicker));
             _massHealer = massHealer ?? throw new ArgumentNullException(nameof(massHealer));
+            _combatHandler = combatHandler ?? throw new ArgumentNullException(nameof(combatHandler));
         }
 
         public IHero? Fight(HeroCollection heroes)
@@ -23,14 +26,14 @@ namespace ArenaConsoleApp.Arena
 
             while (heroes.Count >= 2)
             {
-                // Turn:
                 var participants = _participantsPicker.Pick(from: heroes);
                 Remove(participants, from: heroes);
-                // Fight them => Damage combat participants
+                _combatHandler.Fight(participants);
                 Rest(heroes);
                 Add(participants, to: heroes);
             }
 
+            // Determine winner
             return heroes.First();
         }
 
