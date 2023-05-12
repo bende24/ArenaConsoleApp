@@ -21,9 +21,10 @@ while (!isUserInputCorrect)
     isUserInputCorrect &= numberOfHeroes > 1;
 }
 
-var heroes = CreateHeroes(numberOfHeroes, heroFactory);
+var heroes = new HeroCollection();
+heroes.UnionWith(CreateHeroes(numberOfHeroes, heroFactory));
 
-arena.Fight(heroes);
+var winner = arena.Fight(heroes);
 
 Console.ReadLine();
 

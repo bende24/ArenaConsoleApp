@@ -3,6 +3,7 @@
     internal interface IHero
     {
         string Id { get; }
+        int MaxHealth { get; }
         int Health { get; }
 
         void TakeDamage(int damage);

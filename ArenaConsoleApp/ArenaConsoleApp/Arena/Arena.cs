@@ -17,30 +17,32 @@ namespace ArenaConsoleApp.Arena
             _massHealer = massHealer ?? throw new ArgumentNullException(nameof(massHealer));
         }
 
-        public IHero Fight(IEnumerable<IHero> heroCollection)
+        public IHero? Fight(HeroCollection heroes)
         {
-            Precondition.Requires(heroCollection.IsNotEmpty());
-            var heroes = heroCollection.ToHashSet();
+            Precondition.Requires(heroes.IsNotEmpty());
 
-            // Turn:
             while (heroes.Count >= 2)
             {
-                // Pick attacker, defender
+                // Turn:
                 var participants = _participantsPicker.Pick(from: heroes);
                 Remove(participants, from: heroes);
-                // Fight them
-                // Rest other heroes
+                // Fight them => Damage combat participants
                 Rest(heroes);
-                // Damage combat participants
+                Add(participants, to: heroes);
             }
 
             return heroes.First();
         }
 
-        private static void Remove(CombatParticipants participants, HashSet<IHero> from)
+        private static void Remove(CombatParticipants participants, HeroCollection from)
         {
             from.Remove(participants.Attacker);
             from.Remove(participants.Defender);
+        }
+        private static void Add(CombatParticipants participants, HeroCollection to)
+        {
+            to.Add(participants.Attacker);
+            to.Add(participants.Defender);
         }
 
         private void Rest(IEnumerable<IHero> heroes) => _massHealer.Heal(heroes);

@@ -4,14 +4,13 @@
     {
         public string Id { get; }
 
+        public int MaxHealth { get; }
         public int Health { get; protected set; }
-
-        private readonly int _maxHealth;
 
         protected Hero(string id, int maxHealth)
         {
             Id = id ?? throw new ArgumentNullException(nameof(id));
-            _maxHealth = maxHealth;
+            MaxHealth = maxHealth;
             Health = maxHealth;
         }
 
@@ -19,7 +18,7 @@
         {
             if (heal < 0) return;
             Health += heal;
-            if(Health > _maxHealth) Health = _maxHealth;
+            if(Health > MaxHealth) Health = MaxHealth;
         }
 
         public bool IsDead()
