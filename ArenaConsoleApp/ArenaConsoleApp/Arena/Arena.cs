@@ -1,5 +1,6 @@
 ﻿using ArenaConsoleApp.Combat.Participants;
 using ArenaConsoleApp.ExtensionMethods;
+using ArenaConsoleApp.Healers;
 using ArenaConsoleApp.Heroes;
 using ArenaConsoleApp.InputValidations;
 
@@ -8,10 +9,12 @@ namespace ArenaConsoleApp.Arena
     internal class Arena : IArena
     {
         private readonly ICombatParticipantsPicker _participantsPicker;
+        private readonly IMassHealer _massHealer;
 
-        public Arena(ICombatParticipantsPicker participantsPicker)
+        public Arena(ICombatParticipantsPicker participantsPicker, IMassHealer massHealer)
         {
             _participantsPicker = participantsPicker ?? throw new ArgumentNullException(nameof(participantsPicker));
+            _massHealer = massHealer ?? throw new ArgumentNullException(nameof(massHealer));
         }
 
         public IHero Fight(IEnumerable<IHero> heroCollection)
@@ -27,16 +30,19 @@ namespace ArenaConsoleApp.Arena
                 Remove(participants, from: heroes);
                 // Fight them
                 // Rest other heroes
+                Rest(heroes);
                 // Damage combat participants
             }
 
             return heroes.First();
         }
 
-        private void Remove(CombatParticipants participants, HashSet<IHero> from)
+        private static void Remove(CombatParticipants participants, HashSet<IHero> from)
         {
             from.Remove(participants.Attacker);
             from.Remove(participants.Defender);
         }
+
+        private void Rest(IEnumerable<IHero> heroes) => _massHealer.Heal(heroes);
     }
 }

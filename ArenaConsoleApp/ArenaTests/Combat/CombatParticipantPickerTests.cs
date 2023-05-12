@@ -9,8 +9,7 @@ namespace ArenaTests.Combat
 {
     public class CombatParticipantPickerTests
     {
-        [Theory]
-        // Test list has 4 items
+        [Theory] // Test list has 4 items
         [InlineData(0, 1)]
         [InlineData(1, 0)]
         [InlineData(0, 3)]

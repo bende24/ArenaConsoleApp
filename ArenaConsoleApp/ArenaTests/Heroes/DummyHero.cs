@@ -14,6 +14,10 @@ namespace ArenaTests.Heroes
         {
         }
 
-        public void SetHealth(int health) { Health = health; }
+        public int CurrentHealth
+        {
+            get => Health;
+            set => Health = value;
+        }
     }
 }

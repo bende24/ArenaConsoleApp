@@ -1,13 +1,15 @@
 ﻿using ArenaConsoleApp.Arena;
 using ArenaConsoleApp.Combat.Participants;
+using ArenaConsoleApp.Healers;
 using ArenaConsoleApp.Heroes;
 using ArenaConsoleApp.Rng;
 
 // Composition root
 var heroFactory = new HeroFactory();
 var arena = new Arena(
-    participantsPicker: new CombatParticipantsPicker(new RandomNumbersGenerator())
-    );
+    participantsPicker: new CombatParticipantsPicker(new RandomNumbersGenerator()),
+    massHealer: new MassHealer(10)
+);
 
 // Start of application
 int numberOfHeroes = 0;

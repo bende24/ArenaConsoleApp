@@ -27,9 +27,7 @@ namespace ArenaTests.Heroes
         [InlineData(0, true)]
         public void Hero_is_dead_when_his_health_is_zero(int health, bool isDead)
         {
-            var hero = new DummyHero(100);
-
-            hero.SetHealth(health); 
+            var hero = new DummyHero(maxHealth: 100) { CurrentHealth = health };
 
             Assert.Equal(isDead, hero.IsDead());
         }
@@ -43,8 +41,7 @@ namespace ArenaTests.Heroes
         [InlineData(100, 70, -20, 70)]
         public void Hero_heals_himself_as_expected(int maxHealth, int currentHealth, int healthToHeal, int expectedHealth)
         {
-            var hero = new DummyHero(maxHealth);
-            hero.SetHealth(currentHealth);
+            var hero = new DummyHero(maxHealth) { CurrentHealth = currentHealth };
 
             hero.HealSelf(healthToHeal);
 
