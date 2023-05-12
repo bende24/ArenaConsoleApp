@@ -1,16 +1,22 @@
 ﻿using ArenaConsoleApp.Arena;
+using ArenaConsoleApp.Combat.Participants;
 using ArenaConsoleApp.Heroes;
+using ArenaConsoleApp.Rng;
 
 // Composition root
 var heroFactory = new HeroFactory();
-var arena = new Arena();
+var arena = new Arena(
+    participantsPicker: new CombatParticipantsPicker(new RandomNumbersGenerator())
+    );
 
 // Start of application
 int numberOfHeroes = 0;
-bool isUserInputInt = false;
-while(!isUserInputInt){
+bool isUserInputCorrect = false;
+while (!isUserInputCorrect)
+{
     Console.Write("How many heroes do you want? ");
-    isUserInputInt = int.TryParse(Console.ReadLine(), out numberOfHeroes);
+    isUserInputCorrect = int.TryParse(Console.ReadLine(), out numberOfHeroes);
+    isUserInputCorrect &= numberOfHeroes > 1;
 }
 
 var heroes = CreateHeroes(numberOfHeroes, heroFactory);

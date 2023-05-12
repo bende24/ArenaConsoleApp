@@ -10,6 +10,9 @@ namespace ArenaTests.Heroes
         public DummyHero(int maxHealth) : base("ID", maxHealth)
         {
         }
+        public DummyHero() : base("ID", 100)
+        {
+        }
 
         public void SetHealth(int health) { Health = health; }
     }
