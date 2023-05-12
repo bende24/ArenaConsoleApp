@@ -13,10 +13,6 @@ namespace ArenaConsoleApp.Combat
             if (health.IsOdd()) { health += 1; }
             var damage = health / 2;
             hero.TakeDamage(damage);
-            if(hero.Health < hero.MaxHealth / 4)
-            {
-                hero.TakeDamage(hero.Health);
-            }
         }
     }
 }

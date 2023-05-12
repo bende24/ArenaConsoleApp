@@ -1,16 +1,22 @@
 ﻿using ArenaConsoleApp.Arena;
 using ArenaConsoleApp.Combat;
 using ArenaConsoleApp.Combat.Participants;
+using ArenaConsoleApp.Execution;
 using ArenaConsoleApp.Healers;
 using ArenaConsoleApp.Heroes;
 using ArenaConsoleApp.Rng;
 
 // Composition root
 var heroFactory = new HeroFactory();
+var combatHandler = new CombatHandler(
+    new HeroDamager(),
+    judge: new QuarterHealthExecutionJudge(),
+    new Executioner()
+);
 var arena = new Arena(
     participantsPicker: new CombatParticipantsPicker(new RandomNumbersGenerator()),
     massHealer: new MassHealer(10),
-    combatHandler: new CombatHandler(new HeroHealthHalver())
+    combatHandler
 );
 
 // Start of application
