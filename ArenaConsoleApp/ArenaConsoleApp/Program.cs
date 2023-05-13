@@ -8,15 +8,19 @@ using ArenaConsoleApp.Rng;
 
 // Composition root
 var heroFactory = new HeroFactory();
-var combatHandler = new PostCombatAction(
+var postCombatAction = new PostCombatAction(
     new HeroDamager(),
     judge: new QuarterHealthExecutionJudge(),
     new Executioner()
 );
+var combatActions = new CombatActions()
+{
+    postCombatAction
+};
 var arena = new Arena(
     participantsPicker: new CombatParticipantsPicker(new RandomNumbersGenerator()),
     massHealer: new MassHealer(10),
-    combatHandler
+    combatActions
 );
 
 // Start of application
