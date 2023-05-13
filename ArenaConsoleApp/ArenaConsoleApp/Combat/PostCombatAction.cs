@@ -1,16 +1,16 @@
 ﻿using ArenaConsoleApp.Combat.Participants;
 using ArenaConsoleApp.Execution;
-using ArenaConsoleApp.Heroes;
+using ArenaConsoleApp.ExtensionMethods;
 
 namespace ArenaConsoleApp.Combat
 {
-    internal class CombatHandler : ICombatAction
+    internal class PostCombatAction : ICombatAction
     {
         private readonly IHeroDamager _heroDamager;
         private readonly IExecutionJudge _judge;
         private readonly IExecutioner _executioner;
 
-        public CombatHandler(IHeroDamager heroDamager, IExecutionJudge judge, IExecutioner executioner)
+        public PostCombatAction(IHeroDamager heroDamager, IExecutionJudge judge, IExecutioner executioner)
         {
             _heroDamager = heroDamager ?? throw new ArgumentNullException(nameof(heroDamager));
             _judge = judge ?? throw new ArgumentNullException(nameof(judge));
@@ -21,19 +21,20 @@ namespace ArenaConsoleApp.Combat
         {
             Damage(participants);
 
-            KillIfShouldDie(participants.Attacker);
-            KillIfShouldDie(participants.Defender);
+            KillIfShouldDie(participants);
         }
 
-        private void KillIfShouldDie(IHero hero)
+        private void KillIfShouldDie(CombatParticipants participants)
         {
-            if (_judge.ShouldExecute(hero)) { _executioner.Execute(hero); }
+            participants.All().ForEach(participant =>
+            {
+                if (_judge.ShouldExecute(participant)) { _executioner.Execute(participant); }
+            });
         }
 
         private void Damage(CombatParticipants participants)
         {
-            _heroDamager.Damage(participants.Attacker);
-            _heroDamager.Damage(participants.Defender);
+            participants.All().ForEach(participant => _heroDamager.Damage(participant));
         }
     }
 }

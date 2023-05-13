@@ -39,13 +39,11 @@ namespace ArenaConsoleApp.Arena
 
         private static void Remove(CombatParticipants participants, HeroCollection from)
         {
-            from.Remove(participants.Attacker);
-            from.Remove(participants.Defender);
+            participants.All().ForEach(participant => from.Remove(participant));
         }
         private static void Add(CombatParticipants participants, HeroCollection to)
         {
-            to.Add(participants.Attacker);
-            to.Add(participants.Defender);
+            participants.All().ForEach(participant => to.Add(participant));
         }
 
         private void Rest(IEnumerable<IHero> heroes) => _massHealer.Heal(heroes);
