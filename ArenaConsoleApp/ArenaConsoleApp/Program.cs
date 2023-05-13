@@ -1,13 +1,14 @@
 ﻿using ArenaConsoleApp.Arena;
 using ArenaConsoleApp.Combat;
 using ArenaConsoleApp.Combat.Participants;
+using ArenaConsoleApp.CompositionRoots;
 using ArenaConsoleApp.Execution;
 using ArenaConsoleApp.Healers;
 using ArenaConsoleApp.Heroes;
 using ArenaConsoleApp.Rng;
 
 // Composition root
-var heroFactory = new HeroFactory();
+var duelProvider = DuelProviderFactory.CreateDuelGrid(new RandomNumberGenerator());
 var postCombatAction = new PostCombatAction(
     new HeroDamager(),
     judge: new QuarterHealthExecutionJudge(),
@@ -15,6 +16,7 @@ var postCombatAction = new PostCombatAction(
 );
 var combatActions = new CombatActions()
 {
+    new DuelCombatAction(duelProvider),
     postCombatAction
 };
 var arena = new Arena(
@@ -22,6 +24,7 @@ var arena = new Arena(
     massHealer: new MassHealer(10),
     combatActions
 );
+var heroFactory = new HeroFactory();
 
 // Start of application
 int numberOfHeroes = 0;
