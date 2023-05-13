@@ -24,7 +24,7 @@ namespace ArenaConsoleApp.Combat
 
             _combatAction.Fight(participants);
 
-            _logger.Log($"{attacker.Id} attacks {defender.Id}");
+            _logger.Log($"{attacker} attacks {defender}");
             LogCurrentStateOf(attacker, originalAttackerHealth);
             LogCurrentStateOf(defender, originalDefenderHealth);
         }
@@ -33,11 +33,11 @@ namespace ArenaConsoleApp.Combat
         {
             if (hero.IsAlive())
             {
-                _logger.Log($"{hero.Id} lost ${originalHealth - hero.Health} health, Current health: {hero.Health}");
+                _logger.Log($"{hero} lost {originalHealth - hero.Health} health, Current health: {hero.Health}");
             }
             else
             {
-                _logger.Log($"{hero.Id} died");
+                _logger.Log($"{hero} died");
             }
         }
     }

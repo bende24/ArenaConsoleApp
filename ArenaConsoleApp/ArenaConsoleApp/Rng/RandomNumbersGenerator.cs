@@ -1,11 +1,13 @@
-﻿namespace ArenaConsoleApp.Rng
+﻿using ArenaConsoleApp.ExtensionMethods;
+
+namespace ArenaConsoleApp.Rng
 {
     internal class RandomNumbersGenerator : IRandoms
     {
-        // TODO
         public int[] GenerateNumbers(int inclusiveMin, int exclusiveMax, int count)
         {
-            return new int[] { 0, 1 };
+            var list = Enumerable.Range(inclusiveMin, exclusiveMax).ToList().Shuffle();
+            return list.Take(count).ToArray();
         }
     }
 }

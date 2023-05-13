@@ -33,8 +33,7 @@ namespace ArenaConsoleApp.Arena
                 Add(participants, to: heroes);
             }
 
-            // Determine winner
-            return heroes.First();
+            return heroes.FirstOrDefault();
         }
 
         private static void Remove(CombatParticipants participants, HeroCollection from)

@@ -31,5 +31,10 @@
             Health -= damage;
             if(Health < 0) Health = 0;
         }
+
+        public override string ToString()
+        {
+            return Id;
+        }
     }
 }
