@@ -28,35 +28,53 @@ var arena = new Arena(
 var heroFactory = new HeroFactory();
 
 // Start of application
-int numberOfHeroes = 0;
-bool isUserInputCorrect = false;
-while (!isUserInputCorrect)
+try
 {
-    Console.Write("How many heroes do you want? ");
-    isUserInputCorrect = int.TryParse(Console.ReadLine(), out numberOfHeroes);
-    isUserInputCorrect &= numberOfHeroes > 1;
+    int numberOfHeroes = 0;
+    bool isUserInputCorrect = false;
+    while (!isUserInputCorrect)
+    {
+        Console.Write("How many heroes do you want? ");
+        isUserInputCorrect = int.TryParse(Console.ReadLine(), out numberOfHeroes);
+        isUserInputCorrect &= numberOfHeroes > 1;
+    }
+
+    var heroes = CreateHeroes(numberOfHeroes, heroFactory);
+
+    ConsoleWriteHeroes(heroes);
+
+    var winner = arena.Fight(heroes);
+
+    ConsoleWriteWinner(winner);
+
+    Console.ReadLine();
+}
+catch (Exception e)
+{
+    LogError(e);
+}
+finally { Console.WriteLine("Sorry, something went wrong."); }
+
+static void LogError(Exception e)
+{
+    Console.WriteLine(e);
 }
 
-var heroes = new HeroCollection();
-heroes.UnionWith(CreateHeroes(numberOfHeroes, heroFactory));
-
-var winner = arena.Fight(heroes);
-
-if(winner != null)
+static void ConsoleWriteWinner(IHero? winner)
 {
-    Console.WriteLine($"Winner is {winner}!");
-}
-else
-{
-    Console.WriteLine("Noone won!");
+    if (winner != null)
+    {
+        Console.WriteLine($"Winner is {winner}!");
+    }
+    else
+    {
+        Console.WriteLine("Noone won!");
+    }
 }
 
-Console.ReadLine();
-
-
-IEnumerable<IHero> CreateHeroes(int numberOfHeroes, HeroFactory heroFactory)
+HeroCollection CreateHeroes(int numberOfHeroes, HeroFactory heroFactory)
 {
-    var heroes = new List<IHero>();
+    var heroes = new HeroCollection();
 
     for (int i = 0; i < numberOfHeroes; i++)
     {
@@ -64,4 +82,15 @@ IEnumerable<IHero> CreateHeroes(int numberOfHeroes, HeroFactory heroFactory)
     }
 
     return heroes;
+}
+
+static void ConsoleWriteHeroes(HeroCollection heroes)
+{
+    Console.Write("Heroes: ");
+    foreach (var hero in heroes)
+    {
+        Console.Write($"{hero}, ");
+    }
+    Console.WriteLine();
+    Console.WriteLine();
 }
