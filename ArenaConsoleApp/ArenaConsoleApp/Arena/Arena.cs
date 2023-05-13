@@ -5,7 +5,7 @@ using ArenaConsoleApp.Healers;
 using ArenaConsoleApp.Heroes;
 using ArenaConsoleApp.InputValidations;
 
-namespace ArenaConsoleApp.Arenas
+namespace ArenaConsoleApp.Arena
 {
     internal class Arena : IArena
     {

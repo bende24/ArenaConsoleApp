@@ -11,7 +11,7 @@ namespace ArenaTests.TestHelpers
         {
             var mockRandom = new Mock<IRandom>();
             mockRandom.Setup(m => m.GenerateNumber(It.IsAny<int>(), It.IsAny<int>())).Returns(randomGeneratedNumber);
-            var duelProvider = CompositionRoot.CreateDuelGrid(mockRandom.Object);
+            var duelProvider = DuelProviderFactory.CreateDuelGrid(mockRandom.Object);
             return new DuelCombatAction(duelProvider);
         }
     }
