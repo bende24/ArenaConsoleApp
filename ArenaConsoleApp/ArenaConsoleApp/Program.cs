@@ -5,6 +5,7 @@ using ArenaConsoleApp.CompositionRoots;
 using ArenaConsoleApp.Execution;
 using ArenaConsoleApp.Healers;
 using ArenaConsoleApp.Heroes;
+using ArenaConsoleApp.Loggers;
 using ArenaConsoleApp.Rng;
 
 // Composition root
@@ -22,7 +23,7 @@ var combatActions = new CombatActions()
 var arena = new Arena(
     participantsPicker: new CombatParticipantsPicker(new RandomNumbersGenerator()),
     massHealer: new MassHealer(10),
-    combatActions
+    combatAction: new CombatLogger(new ConsoleLogger(), combatActions)
 );
 var heroFactory = new HeroFactory();
 
@@ -40,6 +41,15 @@ var heroes = new HeroCollection();
 heroes.UnionWith(CreateHeroes(numberOfHeroes, heroFactory));
 
 var winner = arena.Fight(heroes);
+
+if(winner != null)
+{
+    Console.WriteLine($"Winner is {winner}!");
+}
+else
+{
+    Console.WriteLine("Noone won!");
+}
 
 Console.ReadLine();
 
