@@ -1,30 +1,12 @@
-﻿using ArenaConsoleApp.Arena;
-using ArenaConsoleApp.Combat;
-using ArenaConsoleApp.Combat.Participants;
-using ArenaConsoleApp.CompositionRoots;
-using ArenaConsoleApp.Execution;
-using ArenaConsoleApp.Healers;
+﻿using ArenaConsoleApp.CompositionRoots;
 using ArenaConsoleApp.Heroes;
 using ArenaConsoleApp.Loggers;
 using ArenaConsoleApp.Rng;
 
 // Composition root
-var duelProvider = DuelProviderFactory.CreateDuelGrid(new RandomNumberGenerator());
-var postCombatAction = new PostCombatAction(
-    new HeroDamager(),
-    judge: new QuarterHealthExecutionJudge(),
-    new Executioner()
-);
-var combatActions = new CombatActions()
-{
-    new DuelCombatAction(duelProvider),
-    postCombatAction
-};
-var arena = new Arena(
-    participantsPicker: new CombatParticipantsPicker(new RandomNumbersGenerator()),
-    massHealer: new MassHealer(10),
-    combatAction: new CombatLogger(new ConsoleLogger(), combatActions)
-);
+var duelProvider = CompositionRoot.CreateDuelGrid(new RandomNumberGenerator());
+var arena = CompositionRoot.CreateArena(duelProvider, new ConsoleLogger(), new RandomNumbersGenerator());
+
 var heroFactory = new HeroFactory();
 
 // Start of application
@@ -37,26 +19,18 @@ while (!isUserInputCorrect)
     isUserInputCorrect &= numberOfHeroes > 1;
 }
 
-var heroes = new HeroCollection();
-heroes.UnionWith(CreateHeroes(numberOfHeroes, heroFactory));
+var heroes = CreateHeroes(numberOfHeroes, heroFactory);
 
 var winner = arena.Fight(heroes);
 
-if(winner != null)
-{
-    Console.WriteLine($"Winner is {winner}!");
-}
-else
-{
-    Console.WriteLine("Noone won!");
-}
+LogWinner(winner);
 
 Console.ReadLine();
 
 
-IEnumerable<IHero> CreateHeroes(int numberOfHeroes, HeroFactory heroFactory)
+HeroCollection CreateHeroes(int numberOfHeroes, HeroFactory heroFactory)
 {
-    var heroes = new List<IHero>();
+    var heroes = new HeroCollection();
 
     for (int i = 0; i < numberOfHeroes; i++)
     {
@@ -64,4 +38,16 @@ IEnumerable<IHero> CreateHeroes(int numberOfHeroes, HeroFactory heroFactory)
     }
 
     return heroes;
+}
+
+static void LogWinner(IHero? winner)
+{
+    if (winner != null)
+    {
+        Console.WriteLine($"Winner is {winner}!");
+    }
+    else
+    {
+        Console.WriteLine("Noone won!");
+    }
 }

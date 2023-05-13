@@ -1,12 +1,17 @@
-﻿using ArenaConsoleApp.Combat.Duel;
+﻿using ArenaConsoleApp.Arenas;
+using ArenaConsoleApp.Combat;
+using ArenaConsoleApp.Combat.Duel;
+using ArenaConsoleApp.Combat.Participants;
 using ArenaConsoleApp.Combat.Rules;
 using ArenaConsoleApp.Execution;
+using ArenaConsoleApp.Healers;
 using ArenaConsoleApp.Heroes;
+using ArenaConsoleApp.Loggers;
 using ArenaConsoleApp.Rng;
 
 namespace ArenaConsoleApp.CompositionRoots
 {
-    internal class DuelProviderFactory
+    internal class CompositionRoot
     {
         public static IDuelProvider CreateDuelGrid(IRandom rng)
         {
@@ -27,6 +32,26 @@ namespace ArenaConsoleApp.CompositionRoots
             });
 
             return duelGrid;
+        }
+
+        public static IArena CreateArena(IDuelProvider duelProvider, ILogger logger, IRandoms randoms)
+        {
+            var postCombatAction = new PostCombatAction(
+                new HeroDamager(),
+                judge: new QuarterHealthExecutionJudge(),
+                new Executioner()
+            );
+            var combatActions = new CombatActions()
+            {
+                new DuelCombatAction(duelProvider),
+                postCombatAction
+            };
+            var arena = new Arena(
+                participantsPicker: new CombatParticipantsPicker(randoms),
+                massHealer: new MassHealer(10),
+                combatAction: new CombatLogger(logger, combatActions)
+            );
+            return arena;
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using ArenaConsoleApp.Heroes;
 
-namespace ArenaConsoleApp.Arena
+namespace ArenaConsoleApp.Arenas
 {
     internal interface IArena
     {
