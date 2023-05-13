@@ -4,6 +4,6 @@ namespace ArenaConsoleApp.Execution
 {
     internal interface IExecutionJudge
     {
-        bool ShouldBeExecuted(IHero hero);
+        bool ShouldExecute(IHero hero);
     }
 }

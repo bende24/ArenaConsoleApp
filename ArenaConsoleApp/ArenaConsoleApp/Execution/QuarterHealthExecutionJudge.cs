@@ -5,7 +5,7 @@ namespace ArenaConsoleApp.Execution
 {
     internal class QuarterHealthExecutionJudge : IExecutionJudge
     {
-        public bool ShouldBeExecuted(IHero hero)
+        public bool ShouldExecute(IHero hero)
         {
             var maxHealth = hero.MaxHealth;
             if(maxHealth.IsOdd()) { maxHealth += 1; }

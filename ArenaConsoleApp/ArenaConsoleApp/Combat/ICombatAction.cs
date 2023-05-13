@@ -2,7 +2,7 @@
 
 namespace ArenaConsoleApp.Combat
 {
-    internal interface ICombatHandler
+    internal interface ICombatAction
     {
         void Fight(CombatParticipants participants);
     }

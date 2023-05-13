@@ -17,7 +17,7 @@ namespace ArenaTests.Execution
         [InlineData(100, 1, true)]
         [InlineData(99, 24, true)]
         [InlineData(99, 25, false)]
-        public void Kills_hero_when_health_drops_below_quarter_of_max_health(
+        public void Hero_should_die_when_health_is_below_the_quarter_of_max_health(
             int maxHealth,
             int currentHealth,
             bool shouldDie)
@@ -25,7 +25,7 @@ namespace ArenaTests.Execution
             var hero = new DummyHero(maxHealth) { CurrentHealth = currentHealth };
             var judge = new QuarterHealthExecutionJudge();
 
-            var result = judge.ShouldBeExecuted(hero);
+            var result = judge.ShouldExecute(hero);
 
             Assert.Equal(shouldDie, result);
         }

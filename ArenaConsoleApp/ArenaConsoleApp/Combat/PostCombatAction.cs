@@ -1,9 +1,10 @@
 ﻿using ArenaConsoleApp.Combat.Participants;
 using ArenaConsoleApp.Execution;
+using ArenaConsoleApp.Heroes;
 
 namespace ArenaConsoleApp.Combat
 {
-    internal class CombatHandler : ICombatHandler
+    internal class CombatHandler : ICombatAction
     {
         private readonly IHeroDamager _heroDamager;
         private readonly IExecutionJudge _judge;
@@ -18,12 +19,21 @@ namespace ArenaConsoleApp.Combat
 
         public void Fight(CombatParticipants participants)
         {
-            // Duel
+            Damage(participants);
+
+            KillIfShouldDie(participants.Attacker);
+            KillIfShouldDie(participants.Defender);
+        }
+
+        private void KillIfShouldDie(IHero hero)
+        {
+            if (_judge.ShouldExecute(hero)) { _executioner.Execute(hero); }
+        }
+
+        private void Damage(CombatParticipants participants)
+        {
             _heroDamager.Damage(participants.Attacker);
             _heroDamager.Damage(participants.Defender);
-
-            if(_judge.ShouldBeExecuted(participants.Attacker)) { _executioner.Execute(participants.Attacker); }
-            if(_judge.ShouldBeExecuted(participants.Defender)) { _executioner.Execute(participants.Defender); }
         }
     }
 }

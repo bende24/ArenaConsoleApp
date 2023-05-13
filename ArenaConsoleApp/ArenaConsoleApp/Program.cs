@@ -8,7 +8,7 @@ using ArenaConsoleApp.Rng;
 
 // Composition root
 var heroFactory = new HeroFactory();
-var combatHandler = new CombatHandler(
+var combatHandler = new PostCombatAction(
     new HeroDamager(),
     judge: new QuarterHealthExecutionJudge(),
     new Executioner()

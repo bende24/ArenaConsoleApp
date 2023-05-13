@@ -11,13 +11,13 @@ namespace ArenaConsoleApp.Arena
     {
         private readonly ICombatParticipantsPicker _participantsPicker;
         private readonly IMassHealer _massHealer;
-        private readonly ICombatHandler _combatHandler;
+        private readonly ICombatAction _combat;
 
-        public Arena(ICombatParticipantsPicker participantsPicker, IMassHealer massHealer, ICombatHandler combatHandler)
+        public Arena(ICombatParticipantsPicker participantsPicker, IMassHealer massHealer, ICombatAction combatAction)
         {
             _participantsPicker = participantsPicker ?? throw new ArgumentNullException(nameof(participantsPicker));
             _massHealer = massHealer ?? throw new ArgumentNullException(nameof(massHealer));
-            _combatHandler = combatHandler ?? throw new ArgumentNullException(nameof(combatHandler));
+            _combat = combatAction ?? throw new ArgumentNullException(nameof(combatAction));
         }
 
         public IHero? Fight(HeroCollection heroes)
@@ -28,7 +28,7 @@ namespace ArenaConsoleApp.Arena
             {
                 var participants = _participantsPicker.Pick(from: heroes);
                 Remove(participants, from: heroes);
-                _combatHandler.Fight(participants);
+                _combat.Fight(participants);
                 Rest(heroes);
                 Add(participants, to: heroes);
             }
