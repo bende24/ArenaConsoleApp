@@ -1,3 +1,35 @@
+# Whats the app about
+
+## Description
+N number of heroes are fighting in an arena. The heroes can be Archers, Knights and Swordsmen.<br/> 
+Every hero has an ID and Health points as well as they can attack and defend as described below.<br/> 
+
+Archer attacks
+  - Knight: 40% chance the knight dies, 60% chance it blocks
+  - Swordsman: Swordsman dies
+  - Archer: Defender dies
+
+Swordsman attacks:
+  - Knight: Nothing happens
+  - Swordsman: Defender dies
+  - Archer: Archer dies
+
+Knight attacks:
+  - Knight: Defender dies
+  - Swordsman: Knight dies
+  - Archer: Archer dies
+
+The combat is turn based. In every round an attacker and a defender are randomly selected.
+Everyone else rests and their health will increase by 10, but it cant go over their max health.<br/> 
+
+The combat participants (attacker, defender) health will be halved. If its smaller than the quarter of ther starting health they die.<br/> 
+Starting healths: Archer 100, Knight 150, Swordsman 120.<br/> 
+
+Before the fight in the arena starts you have to generate N number of random heroes. You will get this number as an input parameter.<br/> 
+The combat ends when there is a maximum of 1 hero standing.<br/> 
+
+After every round you also have to log who attacked who and how their healths changed.
+
 # Design choices
 
 ## Combat
